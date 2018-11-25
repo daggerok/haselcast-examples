@@ -17,7 +17,7 @@ class HzCfg {
     return HzCfgFactory.hzCfg();
   }
 
-  @Bean
+  @Bean(destroyMethod = "shutdown")
   HazelcastInstance hzInstance(Config hzConfig) {
     return Hazelcast.newHazelcastInstance(hzConfig);
   }
