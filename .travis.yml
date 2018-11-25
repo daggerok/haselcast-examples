@@ -2,34 +2,34 @@ notifications:
   email: false
 env:
   global:
-  - TERM=dumb
-  - secure: JEl8WdTMfTSRkga7sfBUotyQDuSpFQnlg41+/ebmm3h8FSzJxFU4K60ZraRSGyanixXALy9OGSkh+FgsYKUXv0gGKmUFkDYTrJhzYaV8Fd8BHjvZhhpFheyGBYxdtoC4D+EbI/lxRfYFAV96xDixaBCWCRoORYo4e/svgRx3AhOEcJlik4nuv+Jrr6huF27lVrh06p3GSrZncH/sXeDFlqpLLZd8z6VAbofVh9Ouw2TIxZfamd8mjJOvb8E6y/M0o93EOUZyrEhwKMghJXvTjo1ZxMIPq1RnB7Lyz3HJtnAcEi6o71zfZnVrH0giRkS/Zu9zCe4pmwfO+qgkv5iuaL1PVGoRysynVb7kzwX83mWwDMuuwN6YhMMsRf8xDTTRw6pBqziRfo1FiTCwj2P7NaRhbhtTBYlauixSQLqJYzssm6sU3B3mnukYJaJS0GDvmoHjaAgdcQCV1piH5BApX/7Vzkf5yPjDKbAOM/+JDLNM67IE2JLL6F0Syzm9mTPcTmN/Tq4pdm720sPXGQMBhhYaykRQUuwhA09MycPxgQoLg55xHqS7BTlfP+ruZd+7Eiq2pGJibre6bxk2ZtqCmxVQmZE3XJ04y9nqgODoneW7N+kNfY/I7odDvvmR85NjPKKXxH63HwRoK+y9lr6A5g4h6iJBZ82VMWj6xAbP2EE=
+    - TERM=dumb
+    - secure: JEl8WdTMfTSRkga7sfBUotyQDuSpFQnlg41+/ebmm3h8FSzJxFU4K60ZraRSGyanixXALy9OGSkh+FgsYKUXv0gGKmUFkDYTrJhzYaV8Fd8BHjvZhhpFheyGBYxdtoC4D+EbI/lxRfYFAV96xDixaBCWCRoORYo4e/svgRx3AhOEcJlik4nuv+Jrr6huF27lVrh06p3GSrZncH/sXeDFlqpLLZd8z6VAbofVh9Ouw2TIxZfamd8mjJOvb8E6y/M0o93EOUZyrEhwKMghJXvTjo1ZxMIPq1RnB7Lyz3HJtnAcEi6o71zfZnVrH0giRkS/Zu9zCe4pmwfO+qgkv5iuaL1PVGoRysynVb7kzwX83mWwDMuuwN6YhMMsRf8xDTTRw6pBqziRfo1FiTCwj2P7NaRhbhtTBYlauixSQLqJYzssm6sU3B3mnukYJaJS0GDvmoHjaAgdcQCV1piH5BApX/7Vzkf5yPjDKbAOM/+JDLNM67IE2JLL6F0Syzm9mTPcTmN/Tq4pdm720sPXGQMBhhYaykRQUuwhA09MycPxgQoLg55xHqS7BTlfP+ruZd+7Eiq2pGJibre6bxk2ZtqCmxVQmZE3XJ04y9nqgODoneW7N+kNfY/I7odDvvmR85NjPKKXxH63HwRoK+y9lr6A5g4h6iJBZ82VMWj6xAbP2EE=
 language: java
 jdk: oraclejdk8
 service:
-- docker
+  - docker
 addons:
   apt:
     packages:
-    - bash
-    - curl
-    - docker-ce
+      - bash
+      - curl
+      - docker-ce
 install: true
 before_install:
-- sudo apt-get update -yqq >/dev/null
-- sudo apt-get install -yqq --no-install-suggests --no-install-recommends tree jq
-  python-pip curl bash sudo >/dev/null
-- sudo pip install docker-compose httpie >/dev/null 2>&1
-- source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
-- stop_any 8080 3000 80 >/dev/null
+  - sudo apt-get update -yqq >/dev/null
+  - sudo apt-get install -yqq --no-install-suggests --no-install-recommends tree jq
+    python-pip curl bash sudo >/dev/null
+  - sudo pip install docker-compose httpie >/dev/null 2>&1
+  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
+  - stop_any 8080 3000 80 >/dev/null
 script:
-- export root=$(pwd)
-- "./mvnw"
+  - export root=$(pwd)
+  - "./mvnw"
 before_deploy:
-- cd ${root}
-- "./mvnw -Pdocs"
-- mkdir -p ./target/generated-docs
-- cp -Rf ./target/generated-docs/index.html ./target/generated-docs/404.html
+  - cd ${root}
+  - "./mvnw -Pdocs"
+  - mkdir -p ./target/generated-docs
+  - cp -Rf ./target/generated-docs/index.html ./target/generated-docs/404.html
 deploy:
   provider: pages
   skip-cleanup: true
@@ -40,9 +40,9 @@ deploy:
   local-dir: target/generated-docs
   target_branch: gh-pages
 before_cache:
-- for item in $(find ~/.gradle -name "*.lock"); do sudo rm -rf $item ; done
+  - for item in $(find ~/.gradle -name "*.lock"); do sudo rm -rf $item ; done
 cache:
   directories:
-  - "$HOME/.m2"
-  - "$HOME/.gradle"
-  - "$HOME/.docker"
+    - "$HOME/.m2"
+    - "$HOME/.gradle"
+    - "$HOME/.docker"

@@ -8,5 +8,6 @@ public class HzCfgFactory {
     return null;
   }
 
-  private HzCfgFactory() {}
+  private HzCfgFactory() {
+  }
 }

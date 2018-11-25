@@ -16,7 +16,7 @@
   </modules>
 
   <properties>
-    <haselcast.version>3.11</haselcast.version>
+    <hazelcast.version>3.11</hazelcast.version>
     <cucumber.version>1.2.5</cucumber.version>
     <!--
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -65,9 +65,9 @@
       </dependency>
 
       <dependency>
-        <groupId>com.haselcast</groupId>
-        <artifactId>haselcast-all</artifactId>
-        <version>${haselcast.version}</version>
+        <groupId>com.hazelcast</groupId>
+        <artifactId>hazelcast-all</artifactId>
+        <version>${hazelcast.version}</version>
       </dependency>
 
       <dependency>
