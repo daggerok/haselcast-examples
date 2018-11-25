@@ -15,4 +15,12 @@
   <artifactId>client</artifactId>
   <packaging>jar</packaging>
 
+  <dependencies>
+    <dependency>
+      <groupId>com.github.daggerok.app</groupId>
+      <artifactId>library</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
 </project>

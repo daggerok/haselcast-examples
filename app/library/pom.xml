@@ -15,4 +15,11 @@
   <artifactId>library</artifactId>
   <packaging>jar</packaging>
 
+  <dependencies>
+    <dependency>
+      <groupId>com.hazelcast</groupId>
+      <artifactId>hazelcast</artifactId>
+    </dependency>
+  </dependencies>
+
 </project>
