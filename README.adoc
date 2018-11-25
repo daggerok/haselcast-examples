@@ -1,8 +1,8 @@
 = hazelcast-examples image:https://travis-ci.org/daggerok/hazelcast-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/hazelcast-examples"]
 
-//tag::content[]
-
 Read link:https://daggerok.github.io/hazelcast-examples[project reference documentation]
+
+//tag::content[]
 
 .docker / docker-compose
 [source,bash]
