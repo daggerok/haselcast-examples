@@ -1,0 +1,10 @@
+
+//tag::content[]
+
+=== pub-sub
+
+include::./pub-sub-library/src/main/java/com/github/daggerok/library/hz/Hz.java[tags=content]
+include::./pub-sub-backend/src/main/java/com/github/daggerok/app/PubSubBackendApplication.java[tags=content]
+include::./pub-sub-client/src/main/java/com/github/daggerok/client/App.java[tags=content]
+
+//end::content[]

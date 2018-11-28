@@ -1,0 +1,17 @@
+//tag::content[]
+
+=== kryo (subzero)
+
+include::./subzero-kryo-app-library/src/main/java/com/github/daggerok/library/hz/HzCfgFactory.java[tags=content]
+include::./subzero-kryo-app-library/src/main/java/com/github/daggerok/library/entity/DomainEvent.java[tags=content]
+
+[source,bash]
+----
+./mvnw clean install -f ./subzero-kryo-app/pom.xml
+./subzero-kryo-app/subzero-kryo-app-backend/target/*.jar &
+http :8080 ololo=trololo
+http :8080 hoho=oho
+http :8080
+----
+
+//end::content[]

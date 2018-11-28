@@ -14,17 +14,42 @@ addons:
       - bash
       - curl
       - docker-ce
+      - python-pip
+      - sudo
 install: true
 before_install:
-  - sudo apt-get update -yqq >/dev/null
-  - sudo apt-get install -yqq --no-install-suggests --no-install-recommends tree jq
-    python-pip curl bash sudo >/dev/null
   - sudo pip install docker-compose httpie >/dev/null 2>&1
   - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
-  - stop_any 8080 3000 80 >/dev/null
+  - stop_any 80 3000 8080 >/dev/null
 script:
   - export root=$(pwd)
-  - "./mvnw"
+  #
+  - "./mvnw -f ./app/pom.xml install"
+  - "bash ./app/app-backend/target/*.jar &"
+  - wait_for 8080
+  - http :8080 ololo=trololo
+  - http :8080 hohoho=nonono
+  - sleep 2s
+  - http :8080
+  - sleep 2s
+  - stop_any 80 8080
+  #
+  - "./mvnw -f ./pub-sub/pom.xml install"
+  - "./pub-sub/pub-sub-backend/target/*.jar &"
+  - wait_for 8080
+  - java -jar ./pub-sub/pub-sub-client/target/*-all.jar ololo trololo
+  - sleep 2s
+  - stop_any 80 8080
+  #
+  - "./mvnw clean install -f ./subzero-kryo-app/pom.xml"
+  - "./subzero-kryo-app/subzero-kryo-app-backend/target/*.jar &"
+  - wait_for 8080
+  - sleep 2s
+  - http :8080 ololo=trololo
+  - http :8080 hoho=oho
+  - sleep 2s
+  - http :8080
+  - stop_any 80 8080
 before_deploy:
   - cd ${root}
   - "./mvnw -Pdocs"

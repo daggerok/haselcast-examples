@@ -11,6 +11,8 @@
 
   <modules>
     <module>app</module>
+    <module>pub-sub</module>
+    <module>subzero-kryo-app</module>
   </modules>
 
   <properties>
