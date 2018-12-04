@@ -469,7 +469,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:daggerok@gmail.com">daggerok@gmail.com</a></span><br>
 <span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2018-12-04 04:41:45 UTC</span>
+<span id="revdate">2018-12-04 10:07:48 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -513,45 +513,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="app"><a class="anchor" href="#app"></a>app</h3>
-<div class="paragraph">
-<p>TODO&#8230;&#8203;</p>
+<div class="listingblock">
+<div class="title">build, run and test</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw clean install -f ./subzero-kryo-app/pom.xml
+./subzero-kryo-app/subzero-kryo-app-backend/target/*.jar &amp;
+http :8080 ololo=trololo
+http :8080 hoho=oho
+http :8080</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="pub-sub"><a class="anchor" href="#pub-sub"></a>pub-sub</h3>
-<div class="literalblock">
+<div class="listingblock">
+<div class="title">config</div>
 <div class="content">
-<pre>  public static final HazelcastInstance instance = createInstance();
-  public static final HazelcastInstance client = createClient();
-@Slf4j
-@Configuration
-class PubSubHzCfg {
-  @Bean(name = "hzInstance", destroyMethod = "shutdown")
-  HazelcastInstance hzInstance() {
-    return Hz.instance;
-  }</pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">  public static final HazelcastInstance instance = createInstance();
+  public static final HazelcastInstance client = createClient();</code></pre>
 </div>
 </div>
-<div class="literalblock">
+<div class="listingblock">
+<div class="title">publisher</div>
 <div class="content">
-<pre>@Bean(name = "domainEventsTopic")
-ITopic&lt;DomainEvent&gt; domainEventsTopic(@Qualifier("hzInstance") final HazelcastInstance hzInstance) {
-  return hzInstance.getTopic("domainEventsTopic");
-}</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>  @Bean
-  ApplicationRunner applicationRunner(@Qualifier("domainEventsTopic") final ITopic&lt;DomainEvent&gt; domainEventsTopic) {
-    return args -&gt; domainEventsTopic.addMessageListener(
-        message -&gt; log.info("received message: {}",
-                            message.getMessageObject(),
-                            message.getPublishingMember(),
-                            new Date(message.getPublishTime())));
-  }
-}
-    final String topicName = "domainEventsTopic";
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    final String topicName = "domainEventsTopic";
     final HazelcastInstance client = Hz.client;
     final Function&lt;String, ITopic&lt;DomainEvent&gt;&gt; topic = client::getTopic;
     final Function&lt;String, DomainEvent&gt; data = message -&gt; DomainEvent
@@ -559,45 +544,69 @@ ITopic&lt;DomainEvent&gt; domainEventsTopic(@Qualifier("hzInstance") final Hazel
         .createdAt(LocalDateTime.now())
         .type(DomainEvent.Type.NONE)
         .jsonData(JSON.stringify(singletonMap("message", message)))
-        .build();</pre>
+        .build();
+
+    if (args.length &gt; 0) {
+      final String message = String.join("", args);
+      topic.apply(topicName)
+           .publish(data.apply(message));
+    }</code></pre>
 </div>
 </div>
-<div class="literalblock">
+<div class="listingblock">
+<div class="title">subscriber</div>
 <div class="content">
-<pre>if (args.length &gt; 0) {
-  final String message = String.join("", args);
-  topic.apply(topicName)
-       .publish(data.apply(message));
-}</pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Slf4j
+@Configuration
+class PubSubHzCfg {
+  @Bean(name = "hzInstance", destroyMethod = "shutdown")
+  HazelcastInstance hzInstance() {
+    return Hz.instance;
+  }
+
+  @Bean(name = "domainEventsTopic")
+  ITopic&lt;DomainEvent&gt; domainEventsTopic(@Qualifier("hzInstance") final HazelcastInstance hzInstance) {
+    return hzInstance.getTopic("domainEventsTopic");
+  }
+
+  @Bean
+  ApplicationRunner applicationRunner(@Qualifier("domainEventsTopic") final ITopic&lt;DomainEvent&gt; domainEventsTopic) {
+    return args -&gt; domainEventsTopic.addMessageListener(
+        message -&gt; log.info("received message: {}",
+                            message.getMessageObject(),
+                            message.getPublishingMember(),
+                            new Date(message.getPublishTime())));
+  }
+}</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="kryo-subzero"><a class="anchor" href="#kryo-subzero"></a>kryo (subzero)</h3>
-<div class="literalblock">
+<div class="listingblock">
+<div class="title">config</div>
 <div class="content">
-<pre>public static final Config config = createConfig();</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>  private static Config createConfig() {
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">  public static final Config config = createConfig();
+
+  private static Config createConfig() {
     final Config config = new Config();
     SubZero.useAsGlobalSerializer(config);
     return config;
-  }
-@Value
+  }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">entity</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">@Value
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DomainEvent /* implements Serializable */ {
   public enum Type {
     NONE
-  }</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>  // we don't need any serialization, because SubZero Kryo was added globally
+  }
+
+  // we don't need any serialization, because SubZero Kryo was added globally
   // // private static final long serialVersionUID = -3158689686565990234L;
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:s")
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -605,7 +614,7 @@ public class DomainEvent /* implements Serializable */ {
   final LocalDateTime createdAt;
   final Type type;
   final String jsonData;
-}</pre>
+}</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -645,7 +654,7 @@ http :8080</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2018-12-04 04:41:45 UTC
+Last updated 2018-12-04 10:07:48 UTC
 </div>
 </div>
 <!-- jquery -->

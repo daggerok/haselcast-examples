@@ -3,7 +3,7 @@
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 <info>
 <title>hazelcast-examples (0.0.1)</title>
-<date>2018-12-04 04:41:45 UTC</date>
+<date>2018-12-04 10:07:48 UTC</date>
 <author>
 <personname>
 <firstname>Maksim</firstname>
@@ -15,7 +15,7 @@
 <revhistory>
 <revision>
 <revnumber>0.0.1</revnumber>
-<date>2018-12-04 04:41:45 UTC</date>
+<date>2018-12-04 10:07:48 UTC</date>
 <authorinitials>MK</authorinitials>
 </revision>
 </revhistory>
@@ -39,33 +39,30 @@
 <title>Implementation</title>
 <section xml:id="app">
 <title>app</title>
-<simpara>TODO&#8230;&#8203;</simpara>
+<formalpara>
+<title>build, run and test</title>
+<para>
+<programlisting language="bash" linenumbering="unnumbered">./mvnw clean install -f ./subzero-kryo-app/pom.xml
+./subzero-kryo-app/subzero-kryo-app-backend/target/*.jar &amp;
+http :8080 ololo=trololo
+http :8080 hoho=oho
+http :8080</programlisting>
+</para>
+</formalpara>
 </section>
 <section xml:id="pub-sub">
 <title>pub-sub</title>
-<literallayout class="monospaced">  public static final HazelcastInstance instance = createInstance();
-  public static final HazelcastInstance client = createClient();
-@Slf4j
-@Configuration
-class PubSubHzCfg {
-  @Bean(name = "hzInstance", destroyMethod = "shutdown")
-  HazelcastInstance hzInstance() {
-    return Hz.instance;
-  }</literallayout>
-<literallayout class="monospaced">@Bean(name = "domainEventsTopic")
-ITopic&lt;DomainEvent&gt; domainEventsTopic(@Qualifier("hzInstance") final HazelcastInstance hzInstance) {
-  return hzInstance.getTopic("domainEventsTopic");
-}</literallayout>
-<literallayout class="monospaced">  @Bean
-  ApplicationRunner applicationRunner(@Qualifier("domainEventsTopic") final ITopic&lt;DomainEvent&gt; domainEventsTopic) {
-    return args -&gt; domainEventsTopic.addMessageListener(
-        message -&gt; log.info("received message: {}",
-                            message.getMessageObject(),
-                            message.getPublishingMember(),
-                            new Date(message.getPublishTime())));
-  }
-}
-    final String topicName = "domainEventsTopic";
+<formalpara>
+<title>config</title>
+<para>
+<programlisting language="java" linenumbering="unnumbered">  public static final HazelcastInstance instance = createInstance();
+  public static final HazelcastInstance client = createClient();</programlisting>
+</para>
+</formalpara>
+<formalpara>
+<title>publisher</title>
+<para>
+<programlisting language="java" linenumbering="unnumbered">    final String topicName = "domainEventsTopic";
     final HazelcastInstance client = Hz.client;
     final Function&lt;String, ITopic&lt;DomainEvent&gt;&gt; topic = client::getTopic;
     final Function&lt;String, DomainEvent&gt; data = message -&gt; DomainEvent
@@ -73,29 +70,69 @@ ITopic&lt;DomainEvent&gt; domainEventsTopic(@Qualifier("hzInstance") final Hazel
         .createdAt(LocalDateTime.now())
         .type(DomainEvent.Type.NONE)
         .jsonData(JSON.stringify(singletonMap("message", message)))
-        .build();</literallayout>
-<literallayout class="monospaced">if (args.length &gt; 0) {
-  final String message = String.join("", args);
-  topic.apply(topicName)
-       .publish(data.apply(message));
-}</literallayout>
+        .build();
+
+    if (args.length &gt; 0) {
+      final String message = String.join("", args);
+      topic.apply(topicName)
+           .publish(data.apply(message));
+    }</programlisting>
+</para>
+</formalpara>
+<formalpara>
+<title>subscriber</title>
+<para>
+<programlisting language="java" linenumbering="unnumbered">@Slf4j
+@Configuration
+class PubSubHzCfg {
+  @Bean(name = "hzInstance", destroyMethod = "shutdown")
+  HazelcastInstance hzInstance() {
+    return Hz.instance;
+  }
+
+  @Bean(name = "domainEventsTopic")
+  ITopic&lt;DomainEvent&gt; domainEventsTopic(@Qualifier("hzInstance") final HazelcastInstance hzInstance) {
+    return hzInstance.getTopic("domainEventsTopic");
+  }
+
+  @Bean
+  ApplicationRunner applicationRunner(@Qualifier("domainEventsTopic") final ITopic&lt;DomainEvent&gt; domainEventsTopic) {
+    return args -&gt; domainEventsTopic.addMessageListener(
+        message -&gt; log.info("received message: {}",
+                            message.getMessageObject(),
+                            message.getPublishingMember(),
+                            new Date(message.getPublishTime())));
+  }
+}</programlisting>
+</para>
+</formalpara>
 </section>
 <section xml:id="kryo-subzero">
 <title>kryo (subzero)</title>
-<literallayout class="monospaced">public static final Config config = createConfig();</literallayout>
-<literallayout class="monospaced">  private static Config createConfig() {
+<formalpara>
+<title>config</title>
+<para>
+<programlisting language="bash" linenumbering="unnumbered">  public static final Config config = createConfig();
+
+  private static Config createConfig() {
     final Config config = new Config();
     SubZero.useAsGlobalSerializer(config);
     return config;
-  }
-@Value
+  }</programlisting>
+</para>
+</formalpara>
+<formalpara>
+<title>entity</title>
+<para>
+<programlisting language="bash" linenumbering="unnumbered">@Value
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DomainEvent /* implements Serializable */ {
   public enum Type {
     NONE
-  }</literallayout>
-<literallayout class="monospaced">  // we don't need any serialization, because SubZero Kryo was added globally
+  }
+
+  // we don't need any serialization, because SubZero Kryo was added globally
   // // private static final long serialVersionUID = -3158689686565990234L;
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:s")
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -103,7 +140,9 @@ public class DomainEvent /* implements Serializable */ {
   final LocalDateTime createdAt;
   final Type type;
   final String jsonData;
-}</literallayout>
+}</programlisting>
+</para>
+</formalpara>
 <programlisting language="bash" linenumbering="unnumbered">./mvnw clean install -f ./subzero-kryo-app/pom.xml
 ./subzero-kryo-app/subzero-kryo-app-backend/target/*.jar &amp;
 http :8080 ololo=trololo
