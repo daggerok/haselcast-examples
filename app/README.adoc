@@ -3,6 +3,14 @@
 
 === app
 
-TODO...
+.build, run and test
+[source,bash]
+----
+./mvnw clean install -f ./subzero-kryo-app/pom.xml
+./subzero-kryo-app/subzero-kryo-app-backend/target/*.jar &
+http :8080 ololo=trololo
+http :8080 hoho=oho
+http :8080
+----
 
 //end::content[]

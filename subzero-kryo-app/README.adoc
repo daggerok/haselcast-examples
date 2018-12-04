@@ -2,8 +2,17 @@
 
 === kryo (subzero)
 
+.config
+[source,bash]
+----
 include::./subzero-kryo-app-library/src/main/java/com/github/daggerok/library/hz/HzCfgFactory.java[tags=content]
+----
+
+.entity
+[source,bash]
+----
 include::./subzero-kryo-app-library/src/main/java/com/github/daggerok/library/entity/DomainEvent.java[tags=content]
+----
 
 [source,bash]
 ----
