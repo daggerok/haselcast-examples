@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web 1</title>
+</head>
+<body>
+  <h3>session:</h3>
+  {{#session}}
+    <p>session: <span>{{id}}</span></p>
+  {{/session}}
+
+  <h3>events:</h3>
+  <ul>
+    {{#events}}
+      <li>
+        <p>
+          data: <span>{{data}}</span>
+        </p>
+      </li>
+    {{/events}}
+  </ul>
+
+  <h3>raw data:</h3>
+  <pre>
+    {{.}}
+  </pre>
+</body>
+</html>

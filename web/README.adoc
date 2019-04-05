@@ -1,0 +1,22 @@
+
+//tag::content[]
+
+=== hz web
+
+.build, run and test
+[source,bash]
+----
+./mvnw -f ./web/pom.xml package
+
+bash ./web/web1/*.jar
+bash ./web/web2/*.jar
+
+http --session=/tmp/session.json :8081 API-Token:123
+http --session=/tmp/session.json :8082 API-Token:123
+----
+
+//end::content[]
+
+to read: link:https://docs.spring.io/spring-session/docs/current/reference/html5/guides/java-hazelcast.html[Spring Session and Spring Security with Hazelcast]
+others link:https://docs.spring.io/spring-session/docs/current/reference/html5/guides/[Spring Session guides]
+link:https://httpie.org/doc#sessions[HTTPpe persistent session]

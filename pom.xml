@@ -16,6 +16,7 @@
     <module>xml</module>
     <module>xml-sharing</module>
     <module>xml-async-pipeline</module>
+    <module>web</module>
   </modules>
 
   <properties>
