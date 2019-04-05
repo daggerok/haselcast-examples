@@ -13,6 +13,7 @@
     <module>app</module>
     <module>pub-sub</module>
     <module>subzero-kryo-app</module>
+    <module>xml</module>
   </modules>
 
   <properties>

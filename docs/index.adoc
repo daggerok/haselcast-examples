@@ -24,6 +24,7 @@ include::../README.adoc[tags=content]
 include::../app/README.adoc[tags=content]
 include::../pub-sub/README.adoc[tags=content]
 include::../subzero-kryo-app/README.adoc[tags=content]
+include::../xml.adoc[tags=content]
 
 TODO: implement documentation...
 

@@ -24,6 +24,14 @@ before_install:
 script:
   - export root=$(pwd)
   #
+  - "./mvnw -f ./xml/pom.xml install"
+  - "bash ./xml/target/*.jar &"
+  - wait_for 8080
+  - http :8080 ololo=trololo | jq '.'
+  - http :8080 hohoho=nonono | jq '.'
+  - http :8080 | jq '.'
+  - stop_any 80 8080
+  #
   - "./mvnw -f ./app/pom.xml install"
   - "bash ./app/app-backend/target/*.jar &"
   - wait_for 8080
