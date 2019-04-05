@@ -1,7 +1,7 @@
 
 //tag::content[]
 
-=== xml sharing
+=== async pipeline communication
 
 .build, run and test
 [source,bash]
@@ -12,3 +12,5 @@ http :8080
 ----
 
 //end::content[]
+
+link:https://dzone.com/refcardz/getting-started-with-spring-boot-and-microservices?chapter=5[to read]

@@ -1,7 +1,7 @@
 
 //tag::content[]
 
-=== xml
+=== xml hz + key-value repo
 
 .build, run and test
 [source,bash]
@@ -11,3 +11,5 @@ http :8080 data="ololo trololo"
 ----
 
 //end::content[]
+
+link:https://dzone.com/refcardz/getting-started-with-spring-boot-and-microservices?chapter=5[to read]
