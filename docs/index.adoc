@@ -25,6 +25,8 @@ include::../app/README.adoc[tags=content]
 include::../pub-sub/README.adoc[tags=content]
 include::../subzero-kryo-app/README.adoc[tags=content]
 include::../xml.adoc[tags=content]
+include::../xml-sharing.adoc[tags=content]
+include::../xml-async-pipeline.adoc[tags=content]
 
 TODO: implement documentation...
 
