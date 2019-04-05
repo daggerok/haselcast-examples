@@ -1,0 +1,14 @@
+
+//tag::content[]
+
+=== xml sharing
+
+.build, run and test
+[source,bash]
+----
+http :8080 data="and one"
+http :8080 data="and two"
+http :8080
+----
+
+//end::content[]

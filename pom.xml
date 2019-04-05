@@ -15,6 +15,7 @@
     <module>subzero-kryo-app</module>
     <module>xml</module>
     <module>xml-sharing</module>
+    <module>xml-async-pipeline</module>
   </modules>
 
   <properties>

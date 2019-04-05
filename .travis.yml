@@ -24,6 +24,14 @@ before_install:
 script:
   - export root=$(pwd)
   #
+  - "./mvnw -f ./xml-async-pipeline/pom.xml install >/dev/null"
+  - "bash ./xml-async-pipeline/target/*.jar &"
+  - wait_for 8080
+  - http :8080 and=one | jq '.'
+  - http :8080 and=two | jq '.'
+  - http :8080/ | jq '.'
+  - stop_any 80 8080
+  #
   - "./mvnw -f ./xml-sharing/pom.xml install >/dev/null"
   - "bash ./xml-sharing/target/*.jar &"
   - wait_for 8080
