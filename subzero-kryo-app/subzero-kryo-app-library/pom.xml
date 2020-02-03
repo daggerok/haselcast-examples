@@ -4,16 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <parent>
-    <artifactId>subzero-kryo-app</artifactId>
-    <groupId>com.github.daggerok.app</groupId>
+    <version>0.0.2</version>
+    <groupId>com.github.daggerok</groupId>
     <relativePath>../pom.xml</relativePath>
-    <version>0.0.1</version>
+    <artifactId>subzero-kryo-app</artifactId>
   </parent>
 
+  <packaging>jar</packaging>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>subzero-kryo-app-library</artifactId>
-  <packaging>jar</packaging>
-  <version>0.0.1</version>
 
   <dependencies>
     <dependency>
@@ -23,7 +22,7 @@
     <dependency>
       <groupId>info.jerrinot</groupId>
       <artifactId>subzero-all</artifactId>
-      <version>0.7</version>
+      <version>${subzero.version}</version>
     </dependency>
 
     <dependency>

@@ -1,118 +1,169 @@
 notifications:
   email: false
+git:
+  depth: false
+  quiet: true
 env:
   global:
     - TERM=dumb
-    - secure: JEl8WdTMfTSRkga7sfBUotyQDuSpFQnlg41+/ebmm3h8FSzJxFU4K60ZraRSGyanixXALy9OGSkh+FgsYKUXv0gGKmUFkDYTrJhzYaV8Fd8BHjvZhhpFheyGBYxdtoC4D+EbI/lxRfYFAV96xDixaBCWCRoORYo4e/svgRx3AhOEcJlik4nuv+Jrr6huF27lVrh06p3GSrZncH/sXeDFlqpLLZd8z6VAbofVh9Ouw2TIxZfamd8mjJOvb8E6y/M0o93EOUZyrEhwKMghJXvTjo1ZxMIPq1RnB7Lyz3HJtnAcEi6o71zfZnVrH0giRkS/Zu9zCe4pmwfO+qgkv5iuaL1PVGoRysynVb7kzwX83mWwDMuuwN6YhMMsRf8xDTTRw6pBqziRfo1FiTCwj2P7NaRhbhtTBYlauixSQLqJYzssm6sU3B3mnukYJaJS0GDvmoHjaAgdcQCV1piH5BApX/7Vzkf5yPjDKbAOM/+JDLNM67IE2JLL6F0Syzm9mTPcTmN/Tq4pdm720sPXGQMBhhYaykRQUuwhA09MycPxgQoLg55xHqS7BTlfP+ruZd+7Eiq2pGJibre6bxk2ZtqCmxVQmZE3XJ04y9nqgODoneW7N+kNfY/I7odDvvmR85NjPKKXxH63HwRoK+y9lr6A5g4h6iJBZ82VMWj6xAbP2EE=
-language: java
-jdk: oraclejdk8
-service:
-  - docker
+language: python
+python: 3.8
+#language: java
+jdk: openjdk8
+service: docker
+os: linux
+arch: amd64
 addons:
   apt:
     packages:
       - bash
       - curl
-      - docker-ce
-      - python-pip
       - sudo
+      - docker-ce
+      - python3-dev
 install: true
 before_install:
-  - sudo pip install docker-compose httpie >/dev/null 2>&1
+  - |
+    if [ ! -f ${HOME}/.local/daggerok/bash-functions/master/main.bash ] ; then
+      mkdir -p ${HOME}/.local/daggerok/bash-functions/master ;
+      curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash > ${HOME}/.local/daggerok/bash-functions/master/main.bash ;
+    fi
+    source ${HOME}/.local/daggerok/bash-functions/master/main.bash ;
+  - stop_any 80 5432 3000 8080
+  - python3 -m pip install --upgrade pip setuptools httpie
+  - python3 -m pip install --upgrade docker-compose
   - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
-  - stop_any 80 3000 8080 >/dev/null
-script:
-  - export root=$(pwd)
-  #
-  - "./mvnw -f ./spring-data-hazelcast/pom.xml install >/dev/null"
-  - "java -jar ./spring-data-hazelcast/target/*.jar &"
-  - wait_for 8080
-  - sleep 5s
-  - http --session=/tmp/session.json :8080 API-Token:123
-  - http --session=/tmp/session.json :8080/api/v1 API-Token:123 data=one | jq '.'
-  - http --session=/tmp/session.json :8080/api/v1 API-Token:123 data=two | jq '.'
-  - http --session=/tmp/session.json :8080 API-Token:123
-  - stop_any 80 8080
-  #
-  - "./mvnw -f ./web/pom.xml install >/dev/null"
-  - "bash ./web/web1/target/*.war &"
-  - "bash ./web/web2/target/*.war &"
-  - wait_for 8081 8082
-  - sleep 5s
-  - http --session=/tmp/session.json :8081/api/v1 API-Token:123 data=one | jq '.'
-  - http --session=/tmp/session.json :8082/api/v1 API-Token:123 data=two | jq '.'
-  - http --session=/tmp/session.json :8081/api/v1 API-Token:123 | jq '.'
-  - http --session=/tmp/session.json :8082 API-Token:123
-  - http --session=/tmp/session.json :8081 API-Token:123
-  - stop_any 80 8081 8082
-  #
-  - "./mvnw -f ./xml-async-pipeline/pom.xml install >/dev/null"
-  - "bash ./xml-async-pipeline/target/*.jar &"
-  - wait_for 8080
-  - http :8080 and=one | jq '.'
-  - http :8080 and=two | jq '.'
-  - http :8080/ | jq '.'
-  - stop_any 80 8080
-  #
-  - "./mvnw -f ./xml-sharing/pom.xml install >/dev/null"
-  - "bash ./xml-sharing/target/*.jar &"
-  - wait_for 8080
-  - http :8080 ololo=trololo | jq '.'
-  - http :8080 hohoho=nonono | jq '.'
-  - http :8080/client/ | jq '.'
-  - stop_any 80 8080
-  #
-  - "./mvnw -f ./xml/pom.xml install >/dev/null"
-  - "bash ./xml/target/*.jar &"
-  - wait_for 8080
-  - http :8080 ololo=trololo | jq '.'
-  - http :8080 hohoho=nonono | jq '.'
-  - http :8080 | jq '.'
-  - stop_any 80 8080
-  #
-  - "./mvnw -f ./app/pom.xml install"
-  - "bash ./app/app-backend/target/*.jar &"
-  - wait_for 8080
-  - http :8080 ololo=trololo
-  - http :8080 hohoho=nonono
-  - sleep 2s
-  - http :8080
-  - sleep 2s
-  - stop_any 80 8080
-  #
-  - "./mvnw -f ./pub-sub/pom.xml install"
-  - "./pub-sub/pub-sub-backend/target/*.jar &"
-  - wait_for 8080
-  - java -jar ./pub-sub/pub-sub-client/target/*-all.jar ololo trololo
-  - sleep 2s
-  - stop_any 80 8080
-  #
-  - "./mvnw clean install -f ./subzero-kryo-app/pom.xml"
-  - "./subzero-kryo-app/subzero-kryo-app-backend/target/*.jar &"
-  - wait_for 8080
-  - sleep 2s
-  - http :8080 ololo=trololo
-  - http :8080 hoho=oho
-  - sleep 2s
-  - http :8080
-  - stop_any 80 8080
-before_deploy:
-  - cd ${root}
-  - "./mvnw -Pdocs"
-  - mkdir -p ./target/generated-docs
-  - cp -Rf ./target/generated-docs/index.html ./target/generated-docs/404.html
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: "$GITHUB_TOKEN"
-  keep-history: true
-  on:
-    branch: master
-  local-dir: target/generated-docs
-  target_branch: gh-pages
+jobs:
+  include:
+    - stage: test
+      name: spring-data-hazelcast
+      env:
+        - SUBPROJECT_ROOT=spring-data-hazelcast
+      script:
+        - "./mvnw -f $SUBPROJECT_ROOT install"
+        - "java -jar ./$SUBPROJECT_ROOT/target/*.jar &"
+        - wait_for 8080
+        - sleep 5s
+        - http --session=/tmp/session.json :8080 API-Token:123
+        - http --session=/tmp/session.json :8080/api/v1 API-Token:123 data=one
+        - http --session=/tmp/session.json :8080/api/v1 API-Token:123 data=two
+        - http --session=/tmp/session.json :8080 API-Token:123
+        - stop_any 80 8080
+    - stage: test
+      name: web
+      env:
+        - SUBPROJECT_ROOT=web
+      script:
+        - "./mvnw -f $SUBPROJECT_ROOT install"
+        - "bash ./$SUBPROJECT_ROOT/web1/target/*.war &"
+        - "bash ./$SUBPROJECT_ROOT/web2/target/*.war &"
+        - wait_for 8081 8082
+        - sleep 5s
+        - http --session=/tmp/session.json :8081/api/v1 API-Token:123 data=one
+        - http --session=/tmp/session.json :8082/api/v1 API-Token:123 data=two
+        - http --session=/tmp/session.json :8081/api/v1 API-Token:123
+        - http --session=/tmp/session.json :8082 API-Token:123
+        - http --session=/tmp/session.json :8081 API-Token:123
+        - stop_any 80 8081 8082
+    - stage: test
+      name: xml-async-pipeline
+      env:
+        - SUBPROJECT_ROOT=xml-async-pipeline
+      script:
+        - "./mvnw -f $SUBPROJECT_ROOT install"
+        - "bash ./$SUBPROJECT_ROOT/target/*.jar &"
+        - wait_for 8080
+        - http :8080 and=one
+        - http :8080 and=two
+        - http :8080/
+        - stop_any 80 8080
+    - stage: test
+      name: xml-sharing
+      env:
+        - SUBPROJECT_ROOT=xml-sharing
+      script:
+        - "./mvnw -f $SUBPROJECT_ROOT install"
+        - "bash ./$SUBPROJECT_ROOT/target/*.jar &"
+        - wait_for 8080
+        - http :8080 ololo=trololo
+        - http :8080 hohoho=nonono
+        - http :8080/client/
+        - stop_any 80 8080
+    - stage: test
+      name: xml
+      env:
+        - SUBPROJECT_ROOT=xml
+      script:
+        - "./mvnw -f $SUBPROJECT_ROOT install"
+        - "bash ./$SUBPROJECT_ROOT/target/*.jar &"
+        - wait_for 8080
+        - http :8080 ololo=trololo
+        - http :8080 hohoho=nonono
+        - http :8080
+        - stop_any 80 8080
+    - stage: test
+      name: app
+      env:
+        - SUBPROJECT_ROOT=app
+      script:
+        - "./mvnw -f $SUBPROJECT_ROOT install"
+        - "bash ./$SUBPROJECT_ROOT/app-backend/target/*.jar &"
+        - wait_for 8080
+        - http :8080 ololo=trololo
+        - http :8080 hohoho=nonono
+        - sleep 2s
+        - http :8080
+        - sleep 2s
+        - stop_any 80 8080
+    - stage: test
+      name: pub-sub
+      env:
+        - SUBPROJECT_ROOT=pub-sub
+      script:
+        - "./mvnw -f $SUBPROJECT_ROOT install"
+        - "./$SUBPROJECT_ROOT/pub-sub-backend/target/*.jar &"
+        - wait_for 8080
+        - java -jar ./pub-sub/pub-sub-client/target/*-all.jar ololo trololo
+        - sleep 2s
+        - stop_any 80 8080
+    - stage: test
+      name: subzero-kryo-app
+      env:
+        - SUBPROJECT_ROOT=subzero-kryo-app
+      script:
+        - "./mvnw clean install -f $SUBPROJECT_ROOT"
+        - "./$SUBPROJECT_ROOT/subzero-kryo-app-backend/target/*.jar &"
+        - wait_for 8080
+        - sleep 2s
+        - http :8080 ololo=trololo
+        - http :8080 hoho=oho
+        - sleep 2s
+        - http :8080
+        - stop_any 80 8080
+    - stage: deploy
+      name: Deploy GitHub Pages reference documentation
+      env:
+        - secure: JEl8WdTMfTSRkga7sfBUotyQDuSpFQnlg41+/ebmm3h8FSzJxFU4K60ZraRSGyanixXALy9OGSkh+FgsYKUXv0gGKmUFkDYTrJhzYaV8Fd8BHjvZhhpFheyGBYxdtoC4D+EbI/lxRfYFAV96xDixaBCWCRoORYo4e/svgRx3AhOEcJlik4nuv+Jrr6huF27lVrh06p3GSrZncH/sXeDFlqpLLZd8z6VAbofVh9Ouw2TIxZfamd8mjJOvb8E6y/M0o93EOUZyrEhwKMghJXvTjo1ZxMIPq1RnB7Lyz3HJtnAcEi6o71zfZnVrH0giRkS/Zu9zCe4pmwfO+qgkv5iuaL1PVGoRysynVb7kzwX83mWwDMuuwN6YhMMsRf8xDTTRw6pBqziRfo1FiTCwj2P7NaRhbhtTBYlauixSQLqJYzssm6sU3B3mnukYJaJS0GDvmoHjaAgdcQCV1piH5BApX/7Vzkf5yPjDKbAOM/+JDLNM67IE2JLL6F0Syzm9mTPcTmN/Tq4pdm720sPXGQMBhhYaykRQUuwhA09MycPxgQoLg55xHqS7BTlfP+ruZd+7Eiq2pGJibre6bxk2ZtqCmxVQmZE3XJ04y9nqgODoneW7N+kNfY/I7odDvvmR85NjPKKXxH63HwRoK+y9lr6A5g4h6iJBZ82VMWj6xAbP2EE=
+      script: skip
+      before_deploy:
+        - "cd $TRAVIS_BUILD_DIR && ./mvnw"
+        - mkdir -p ./target/generated-docs
+        - touch ./target/generated-docs/index.html
+        - cp -Rf ./target/generated-docs/index.html ./target/generated-docs/404.html
+        - cp -Rf ./target/generated-docs/index.html ./target/generated-docs/.nojekyll
+      deploy: &pages
+        provider: pages
+        on:
+          branch: master
+        skip-cleanup: true
+        keep-history: true
+        target_branch: gh-pages
+        github-token: "$GITHUB_TOKEN"
+        local-dir: $TRAVIS_BUILD_DIR/target/generated-docs
 cache:
+  pip: true
   packages: true
   directories:
-    - "$HOME/.m2"
-    - "$HOME/.gradle"
-    - "$HOME/.docker"
+    - ~/.m*
+    - ~/.g*
+    - ~/.d*

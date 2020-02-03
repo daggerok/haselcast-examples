@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.2.4.RELEASE</version>
+    <relativePath/>
+  </parent>
+
+  <version>0.0.2</version>
+  <packaging>pom</packaging>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.daggerok</groupId>
-  <version>0.0.1</version>
   <artifactId>hazelcast-examples</artifactId>
-  <packaging>pom</packaging>
 
   <modules>
     <module>app</module>
@@ -28,25 +35,170 @@
     <encoding>UTF-8</encoding>
     <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
+
+    <vavr.version>0.10.2</vavr.version>
+    <subzero.version>0.7</subzero.version>
+    <lombok.version>1.18.10</lombok.version>
+    <logback.version>1.2.3</logback.version>
+    <cucumber.version>1.2.6</cucumber.version>
+    <spring.boot.version>2.2.4.RELEASE</spring.boot.version>
+    <spring-data-hazelcast.version>2.2.2</spring-data-hazelcast.version>
+    <hazelcast.version>3.11.1</hazelcast.version><!--<hazelcast.version>3.11</hazelcast.version>-->
+    <!--
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+    <material.design.icons.version>3.0.1</material.design.icons.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+    <materializecss.version>1.0.0</materializecss.version>
+    <junit.jupiter.version>5.3.1</junit.jupiter.version>
+    <jakson-kotlin.version>2.9.7</jakson-kotlin.version>
+    <assertj.version>3.11.1</assertj.version>
+    <assertk.version>0.12</assertk.version>
+    <lombok.version>1.18.4</lombok.version>
+    <kotlin.version>1.3.10</kotlin.version>
+    <jgiven.version>0.16.1</jgiven.version>
+    <slf4j.version>1.7.25</slf4j.version>
+    <junit4.version>4.12</junit4.version>
+    -->
+    <asciidoctorj-pdf.version>1.5.0-rc.2</asciidoctorj-pdf.version>
+    <asciidoctorj-diagram.version>1.5.10</asciidoctorj-diagram.version>
+    <asciidoctor-maven-plugin.version>1.5.7.1</asciidoctor-maven-plugin.version>
+    <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+    <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.github.daggerok</groupId>
+        <artifactId>pub-sub-library</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.daggerok</groupId>
+        <artifactId>pub-sub-backend</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.daggerok</groupId>
+        <artifactId>pub-sub-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.github.daggerok</groupId>
+        <artifactId>subzero-kryo-app-library</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.daggerok</groupId>
+        <artifactId>subzero-kryo-app-backend</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.daggerok</groupId>
+        <artifactId>subzero-kryo-app-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.github.daggerok</groupId>
+        <artifactId>app-library</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.daggerok</groupId>
+        <artifactId>app-backend</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.daggerok</groupId>
+        <artifactId>app-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.hazelcast</groupId>
+        <artifactId>hazelcast-all</artifactId>
+        <version>${hazelcast.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.hazelcast</groupId>
+        <artifactId>hazelcast-spring</artifactId>
+        <version>${hazelcast.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>info.cukes</groupId>
+        <artifactId>cucumber-java</artifactId>
+        <version>${cucumber.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>info.cukes</groupId>
+        <artifactId>cucumber-junit</artifactId>
+        <version>${cucumber.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>info.cukes</groupId>
+        <artifactId>cucumber-spring</artifactId>
+        <version>${cucumber.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>info.cukes</groupId>
+        <artifactId>cucumber-picocontainer</artifactId>
+        <version>${cucumber.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+        <optional>true</optional>
+      </dependency>
+      <dependency>
+        <groupId>io.vavr</groupId>
+        <artifactId>vavr</artifactId>
+        <version>${vavr.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <build>
-    <defaultGoal>clean process-resources</defaultGoal>
+    <defaultGoal>clean process-resources package install</defaultGoal>
     <plugins>
       <plugin>
         <groupId>org.asciidoctor</groupId>
         <artifactId>asciidoctor-maven-plugin</artifactId>
-        <version>1.5.7.1</version>
+        <version>${asciidoctor-maven-plugin.version}</version>
         <dependencies>
           <dependency>
             <groupId>org.asciidoctor</groupId>
             <artifactId>asciidoctorj-pdf</artifactId>
-            <version>1.5.0-alpha.16</version>
+            <version>${asciidoctorj-pdf.version}</version>
           </dependency>
           <dependency>
             <groupId>org.asciidoctor</groupId>
             <artifactId>asciidoctorj-diagram</artifactId>
-            <version>1.5.10</version>
+            <version>${asciidoctorj-diagram.version}</version>
           </dependency>
         </dependencies>
         <configuration>
@@ -122,6 +274,61 @@
         </executions>
       </plugin>
     </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <configuration>
+            <executable>true</executable>
+          </configuration>
+          <executions>
+            <execution>
+              <id>build-info</id>
+              <phase>package</phase>
+              <goals><goal>build-info</goal></goals>
+            </execution>
+            <execution>
+              <id>repackage</id>
+              <phase>package</phase>
+              <goals><goal>repackage</goal></goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
+
+  <repositories>
+    <repository>
+      <id>spring-snapshots</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-snapshots</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>

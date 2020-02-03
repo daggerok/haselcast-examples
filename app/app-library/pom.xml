@@ -4,16 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <parent>
+    <version>0.0.2</version>
     <artifactId>app</artifactId>
-    <groupId>com.github.daggerok.app</groupId>
+    <groupId>com.github.daggerok</groupId>
     <relativePath>../pom.xml</relativePath>
-    <version>0.0.1</version>
   </parent>
 
+  <packaging>jar</packaging>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>app-library</artifactId>
-  <packaging>jar</packaging>
-  <version>0.0.1</version>
 
   <dependencies>
     <dependency>
