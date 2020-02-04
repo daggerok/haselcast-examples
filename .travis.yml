@@ -9,7 +9,7 @@ env:
 language: python
 python: 3.8
 #language: java
-jdk: openjdk8
+jdk: openjdk11
 service: docker
 os: linux
 arch: amd64
@@ -164,6 +164,6 @@ cache:
   pip: true
   packages: true
   directories:
-    - ~/.m*
-    - ~/.g*
-    - ~/.d*
+    - ~/.local/daggerok
+    - ~/.docker
+    - ~/.m2
