@@ -2,8 +2,8 @@
 <?asciidoc-toc maxdepth="4"?>
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 <info>
-<title>hazelcast-examples (0.0.1)</title>
-<date>2019-04-07 00:35:38 UTC</date>
+<title>hazelcast-examples (0.0.2)</title>
+<date>2020-02-04 00:29:46 UTC</date>
 <author>
 <personname>
 <firstname>Maksim</firstname>
@@ -14,8 +14,8 @@
 <authorinitials>MK</authorinitials>
 <revhistory>
 <revision>
-<revnumber>0.0.1</revnumber>
-<date>2019-04-07 00:35:38 UTC</date>
+<revnumber>0.0.2</revnumber>
+<date>2020-02-04 00:29:46 UTC</date>
 <authorinitials>MK</authorinitials>
 </revision>
 </revhistory>
@@ -26,6 +26,12 @@
 <title>docker / docker-compose</title>
 <para>
 <programlisting language="bash" linenumbering="unnumbered">./mvnw</programlisting>
+</para>
+</formalpara>
+<formalpara>
+<title>increment maven version</title>
+<para>
+<programlisting language="bash" linenumbering="unnumbered">./mvnw build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false</programlisting>
 </para>
 </formalpara>
 <simpara>Resources:</simpara>

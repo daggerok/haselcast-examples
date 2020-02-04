@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.7.1">
 <meta name="author" content="Maksim Kostromin">
-<title>hazelcast-examples (0.0.1)</title>
+<title>hazelcast-examples (0.0.2)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -464,12 +464,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>hazelcast-examples (0.0.1) <span class="image"><a class="image" href="https://github.com/daggerok/hazelcast-examples"><img src="https://travis-ci.org/daggerok/hazelcast-examples.svg?branch=master" alt="Build Status"></a></span></h1>
+<h1>hazelcast-examples (0.0.2) <span class="image"><a class="image" href="https://github.com/daggerok/hazelcast-examples"><img src="https://travis-ci.org/daggerok/hazelcast-examples.svg?branch=master" alt="Build Status"></a></span></h1>
 <div class="details">
 <span id="author" class="author">Maksim Kostromin</span><br>
 <span id="email" class="email"><a href="mailto:daggerok@gmail.com">daggerok@gmail.com</a></span><br>
-<span id="revnumber">version 0.0.1,</span>
-<span id="revdate">2019-04-07 00:35:38 UTC</span>
+<span id="revnumber">version 0.0.2,</span>
+<span id="revdate">2020-02-04 00:29:46 UTC</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -494,6 +494,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="title">docker / docker-compose</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">increment maven version</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -658,8 +664,8 @@ Unresolved directive in index.adoc - include::../xml-async-pipeline.adoc[tags=co
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 0.0.1<br>
-Last updated 2019-04-07 00:35:38 UTC
+Version 0.0.2<br>
+Last updated 2020-02-04 00:29:46 UTC
 </div>
 </div>
 <!-- jquery -->
