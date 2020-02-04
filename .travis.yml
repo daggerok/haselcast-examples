@@ -32,7 +32,6 @@ before_install:
   - stop_any 80 5432 3000 8080
   - python3 -m pip install --upgrade pip setuptools httpie
   - python3 -m pip install --upgrade docker-compose
-  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
 jobs:
   include:
     - stage: test
