@@ -166,4 +166,4 @@ cache:
   directories:
     - ~/.local/daggerok
     - ~/.docker
-    - ~/.m2
+    #- ~/.m2
