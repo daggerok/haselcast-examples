@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <parent>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <groupId>com.github.daggerok</groupId>
     <relativePath>../pom.xml</relativePath>
     <artifactId>hazelcast-examples</artifactId>
