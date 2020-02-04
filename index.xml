@@ -2,8 +2,8 @@
 <?asciidoc-toc maxdepth="4"?>
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 <info>
-<title>hazelcast-examples (0.0.2)</title>
-<date>2020-02-04 00:38:37 UTC</date>
+<title>hazelcast-examples (0.0.3)</title>
+<date>2020-02-04 00:48:11 UTC</date>
 <author>
 <personname>
 <firstname>Maksim</firstname>
@@ -14,8 +14,8 @@
 <authorinitials>MK</authorinitials>
 <revhistory>
 <revision>
-<revnumber>0.0.2</revnumber>
-<date>2020-02-04 00:38:37 UTC</date>
+<revnumber>0.0.3</revnumber>
+<date>2020-02-04 00:48:11 UTC</date>
 <authorinitials>MK</authorinitials>
 </revision>
 </revhistory>
