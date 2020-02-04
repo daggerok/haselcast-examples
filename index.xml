@@ -3,7 +3,7 @@
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
 <info>
 <title>hazelcast-examples (0.0.2)</title>
-<date>2020-02-04 00:29:46 UTC</date>
+<date>2020-02-04 00:31:51 UTC</date>
 <author>
 <personname>
 <firstname>Maksim</firstname>
@@ -15,7 +15,7 @@
 <revhistory>
 <revision>
 <revnumber>0.0.2</revnumber>
-<date>2020-02-04 00:29:46 UTC</date>
+<date>2020-02-04 00:31:51 UTC</date>
 <authorinitials>MK</authorinitials>
 </revision>
 </revhistory>
