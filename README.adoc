@@ -1,5 +1,16 @@
 = hazelcast-examples image:https://travis-ci.org/daggerok/hazelcast-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/hazelcast-examples"]
 
+Common problem and Challenges solving with Hazelcast:
+
+* leader election
+* synchronization distributed semaphore
+* synchronization distributed barrier
+* liveness service discovery
+* distributed microservices configuration
+* concurrency problems
+* distributed failures
+* consistency issues
+
 Read link:https://daggerok.github.io/hazelcast-examples[project reference documentation]
 
 //tag::content[]
